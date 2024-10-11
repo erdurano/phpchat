@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Database\DatabaseConnection;
+use PDO;
 
 class GroupRepository
 {
@@ -24,7 +25,7 @@ class GroupRepository
     public function listGroups()
     {
         $stmt = $this->db->query('SELECT * FROM groups');
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_NAMED);
     }
 
     public function joinGroup(int $groupId, string $userId)
