@@ -11,7 +11,7 @@ class DatabaseConnection
 
     private function __construct()
     {
-        $this->connection = new PDO('sqlite:' . __DIR__ . '/../../chat.db', options: [PDO::FETCH_OBJ]);
+        $this->connection = new PDO('sqlite:' . __DIR__ . '/../../chat.db');
         $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     }
 
