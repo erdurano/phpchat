@@ -3,12 +3,17 @@
 use Slim\Factory\AppFactory;
 use App\Controllers\GroupController;
 use App\Controllers\MessageController;
+use App\Middlewares\ContentTypeMiddleware;
 
 require __DIR__ . '/../vendor/autoload.php';
 
 $app = AppFactory::create();
 
 $app->addBodyParsingMiddleware();
+
+// Add custom middleware beneath ErrorMiddleware
+$app->add(new ContentTypeMiddleware($app));
+
 $app->addErrorMiddleware(true, true, true);
 
 $app->post('/groups', [GroupController::class, 'createGroup']);
