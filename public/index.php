@@ -3,7 +3,6 @@
 use Slim\Factory\AppFactory;
 use App\Controllers\GroupController;
 use App\Controllers\MessageController;
-use Slim\Middleware\BodyParsingMiddleware;
 
 require __DIR__ . '/../vendor/autoload.php';
 
