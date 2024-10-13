@@ -4,8 +4,9 @@
     "phpunit.execPath": "${workspaceRoot}/vendor/bin/phpunit",
     "phpunit.testExplorer.enabled": true,
     "phpunit.args": [
-        "--configuration",
-        "./phpunit.xml.dist"
+        //     "--configuration",
+        //     "./phpunit.xml.dist"
+        "Tests"
     ],
     "phpunit.preferRunClassTestOverQuickPickWindow": false
 }

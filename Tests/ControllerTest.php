@@ -32,25 +32,25 @@ final class ControllerTest extends TestCase
         $returned_response = $test_controller($request, $response, []);
 
         $this->assertEquals(
-            200,
-            $returned_response->getStatusCode()
+            expected: 200,
+            actual: $returned_response->getStatusCode()
         );
         $this->assertEquals(
-            'MockModel',
-            json_decode($returned_response->getBody()->__toString())
+            expected: 'MockModel',
+            actual: json_decode(json: $returned_response->getBody()->__toString())
         );
     }
     public function testTraitRedirectionToDefaultError(): void
     {
         $test_controller = new MockController(new MockModel());
-        $request = $this->requestFactory->createRequest('PUT', '/');
+        $request = $this->requestFactory->createRequest('GET', '/');
         $response = $this->responseFactory->createResponse();
 
         $returned_response = $test_controller($request, $response, []);
 
         $this->assertEquals(
-            405,
-            $returned_response->getStatusCode()
+            expected: 405,
+            actual: $returned_response->getStatusCode()
         );
     }
 }

@@ -23,15 +23,15 @@ trait ControllerTrait
     {
         // Creates and returns an error response indicating method is not allowed.
         $err_content["error"] = "This method is not supported for thise endpoint";
-        $response->getBody()->write(json_encode($err_content));
-        $response->withStatus(StatusCodeInterface::STATUS_METHOD_NOT_ALLOWED);
+        $response->getBody()->write(string: json_encode(value: $err_content));
+        $response->withStatus(code: StatusCodeInterface::STATUS_METHOD_NOT_ALLOWED);
         return $response;
     }
 
     public function __invoke(Request $request, Response $response, array $args): Response
     {
         $request_method = $request->getMethod();
-        if (!in_array($request_method, get_class_methods($this), true)) {
+        if (!in_array(needle: $request_method, haystack: get_class_methods(object_or_class: $this), strict: true)) {
             return $this->defaultErrorResponse($request, $response, $args);
         }
 
