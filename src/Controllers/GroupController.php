@@ -5,42 +5,22 @@ namespace App\Controllers;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Services\GroupService;
+use App\Models\ModelInterface;
+use App\Models\UserModel;
+
+use function PHPUnit\Framework\isEmpty;
 
 class GroupController
 {
-    private $groupService;
+    use ControllerTrait;
 
-    public function __construct()
+    public function POST(Request $request, Response $response, array $args)
     {
-        $this->groupService = new GroupService();
-    }
+        $returned_data = $this->model->createResource($args);
 
-    public function createGroup(Request $request, Response $response, array $args): Response
-    {
-        $data = $request->getParsedBody();
-        $result = $this->groupService->createGroup($data['group_name']);
-
-        $response->getBody()->write(json_encode($result));
-        return $response->withHeader('Content-Type', 'application/json');
-    }
-
-    public function listGroups(Request $request, Response $response): Response
-    {
-        $groups = $this->groupService->listGroups();
-
-        $response->getBody()->write(json_encode($groups));
-        return $response->withHeader('Content-Type', 'application/json');
-    }
-
-    public function joinGroup(Request $request, Response $response, array $args): Response
-    {
-        $data = $request->getParsedBody();
-        $groupId = (int) $args['group_id'];
-        $userId = $data['user_id'];
-
-        $result = $this->groupService->joinGroup($groupId, $userId);
-
-        $response->getBody()->write(json_encode($result));
-        return $response->withHeader('Content-Type', 'application/json');
+        if (!empty($returned_data)) {
+            $response->getBody()->write(json_encode($returned_data));
+            return $response;
+        };
     }
 }

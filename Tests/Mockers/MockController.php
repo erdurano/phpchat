@@ -18,6 +18,6 @@ class MockController
     {
         // $response->getBody()->write(json_encode(["stream" => "whatever"]));
         // return $response->withStatus(StatusCodeInterface::STATUS_OK);
-        return $this->model->handle($request, $response, $args);
+        return $response;
     }
 }

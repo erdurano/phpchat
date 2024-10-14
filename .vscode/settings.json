@@ -1,12 +1,11 @@
 {
     // ...
     // PHPUnit Settings.
-    "phpunit.execPath": "${workspaceRoot}/vendor/bin/phpunit",
-    "phpunit.testExplorer.enabled": true,
+    // "phpunit.testExplorer.enabled": true,
     "phpunit.args": [
+        "./Tests/"
         //     "--configuration",
         //     "./phpunit.xml.dist"
-        "Tests"
     ],
-    "phpunit.preferRunClassTestOverQuickPickWindow": false
+    // "phpunit.preferRunClassTestOverQuickPickWindow": false
 }

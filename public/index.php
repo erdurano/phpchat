@@ -29,7 +29,7 @@ $app->post('/groups', [GroupController::class, 'createGroup']);
 $app->get('/groups', [GroupController::class, 'listGroups']);
 $app->post('/groups/{group_id}/join', [GroupController::class, 'joinGroup']);
 
-$app->map(['POST', 'GET'], '/try', new MockController(new MockModel()));
+// $app->map(['POST', 'GET'], '/try', new MockController(new MockModel()));
 
 $app->post('/groups/{group_id}/messages', [MessageController::class, 'sendMessage']);
 $app->get('/groups/{group_id}/messages', [MessageController::class, 'listMessages']);

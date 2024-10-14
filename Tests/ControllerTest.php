@@ -3,46 +3,31 @@
 declare(strict_types=1);
 
 use PHPUnit\Framework\TestCase;
-use App\Controllers\ControllerTrait;
-use App\Controllers\MockController;
-use App\Models\MockModel;
-use Psr\Http\Message\ResponseInterface as Response;
 use Slim\Psr7\Factory\RequestFactory;
 use Slim\Psr7\Factory\ResponseFactory;
-use Slim\Psr7\Factory\ServerRequestFactory;
+use App\Models\ModelInterface;
+use App\Controllers\ControllerTrait as AppControllerTrait;
+use App\Controllers\GroupController;
+use PHPUnit\Framework\MockObject\MockObject;
 
 
 final class ControllerTest extends TestCase
 {
     private RequestFactory $requestFactory;
     private ResponseFactory $responseFactory;
+    private MockObject $mockModel;
 
     protected function setUp(): void
     {
         $this->requestFactory = new RequestFactory();
         $this->responseFactory = new ResponseFactory();
+        $this->mockModel = $this->getMockBuilder(ModelInterface::class)->getMock();
     }
 
-    public function testOfTraitRedirectionToModel(): void
-    {
-        $test_controller = new MockController(new MockModel());
-        $request = $this->requestFactory->createRequest('POST', '/');
-        $response = $this->responseFactory->createResponse();
-
-        $returned_response = $test_controller($request, $response, []);
-
-        $this->assertEquals(
-            expected: 200,
-            actual: $returned_response->getStatusCode()
-        );
-        $this->assertEquals(
-            expected: 'MockModel',
-            actual: json_decode(json: $returned_response->getBody()->__toString())
-        );
-    }
     public function testTraitRedirectionToDefaultError(): void
     {
-        $test_controller = new MockController(new MockModel());
+        $test_controller = $this->getMockForTrait(AppControllerTrait::class, callOriginalConstructor: false);
+        $test_controller->model = $this->mockModel;
         $request = $this->requestFactory->createRequest('GET', '/');
         $response = $this->responseFactory->createResponse();
 
@@ -52,5 +37,28 @@ final class ControllerTest extends TestCase
             expected: 405,
             actual: $returned_response->getStatusCode()
         );
+    }
+
+    public function testGroupControllerPostGoodCase(): void
+    {
+        $this->mockModel->method('createResource')->with(['name' => 'general discussion'])->willReturn(
+            [
+                'id' => 1,
+                'group_name' => 'general discussion'
+            ]
+        );
+        $test_controller = new GroupController($this->mockModel);
+        $post_request = $this->requestFactory->createRequest('POST', '/');
+        $post_request->getBody()->write(json_encode([
+            'group_name' => 'general discussion'
+        ]));
+        $response = $this->responseFactory->createResponse();
+
+
+        $return_response = $test_controller($post_request, $response, []);
+
+        $return_array = json_decode($return_response->getBody()->__toString());
+        $this->assertArrayHasKey('id', $return_array);
+        $this->assertArrayHasKey('group_name', $return_array);
     }
 }

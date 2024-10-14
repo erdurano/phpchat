@@ -23,8 +23,8 @@ trait ControllerTrait
     {
         // Creates and returns an error response indicating method is not allowed.
         $err_content["error"] = "This method is not supported for thise endpoint";
+        $response = $response->withStatus(code: StatusCodeInterface::STATUS_METHOD_NOT_ALLOWED);
         $response->getBody()->write(string: json_encode(value: $err_content));
-        $response->withStatus(code: StatusCodeInterface::STATUS_METHOD_NOT_ALLOWED);
         return $response;
     }
 
