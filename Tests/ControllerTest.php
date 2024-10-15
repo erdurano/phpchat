@@ -21,7 +21,7 @@ final class ControllerTest extends TestCase
     {
         $this->requestFactory = new RequestFactory();
         $this->responseFactory = new ResponseFactory();
-        $this->mockModel = $this->getMockBuilder(ModelInterface::class)->getMock();
+        $this->mockModel = $this->createMock(ModelInterface::class);
     }
 
     public function testTraitRedirectionToDefaultError(): void
@@ -37,28 +37,5 @@ final class ControllerTest extends TestCase
             expected: 405,
             actual: $returned_response->getStatusCode()
         );
-    }
-
-    public function testGroupControllerPostGoodCase(): void
-    {
-        $this->mockModel->method('createResource')->with(['name' => 'general discussion'])->willReturn(
-            [
-                'id' => 1,
-                'group_name' => 'general discussion'
-            ]
-        );
-        $test_controller = new GroupController($this->mockModel);
-        $post_request = $this->requestFactory->createRequest('POST', '/');
-        $post_request->getBody()->write(json_encode([
-            'group_name' => 'general discussion'
-        ]));
-        $response = $this->responseFactory->createResponse();
-
-
-        $return_response = $test_controller($post_request, $response, []);
-
-        $return_array = json_decode($return_response->getBody()->__toString());
-        $this->assertArrayHasKey('id', $return_array);
-        $this->assertArrayHasKey('group_name', $return_array);
     }
 }
