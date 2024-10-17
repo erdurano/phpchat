@@ -12,6 +12,9 @@ use PHPUnit\Framework\MockObject\MockObject;
 use App\Models\ModelExceptions\ResourceAlreadyExists;
 use Fig\Http\Message\StatusCodeInterface;
 
+use function PHPUnit\Framework\assertArrayHasKey;
+use function PHPUnit\Framework\assertEquals;
+
 final class GroupControllerTest extends TestCase
 {
     private RequestFactory $requestFactory;
@@ -52,6 +55,8 @@ final class GroupControllerTest extends TestCase
         $return_array = json_decode($return_response->getBody()->__toString(), associative: true);
         $this->assertArrayHasKey('id', $return_array);
         $this->assertArrayHasKey('group_name', $return_array);
+
+        $this->assertEquals(StatusCodeInterface::STATUS_CREATED, $return_response->getStatusCode());
     }
 
     public function testPostGroupAlreadyExists(): void
@@ -115,5 +120,56 @@ final class GroupControllerTest extends TestCase
             ],
             json_decode($return_response->getBody()->__toString(), associative: true)
         );
+    }
+
+    public function testGetGroups()
+    {
+        $this->mockModel->method('getResource')->willReturn([
+            ['id' => 1, 'group_name' => 'general_discussion'],
+            ['id' => 2, 'group_name' => 'music']
+        ]);
+
+        $test_controller = new GroupController($this->mockModel);
+        $post_request = $this->requestFactory->createRequest('GET', '/');
+        $post_request;
+        $response = $this->responseFactory->createResponse();
+
+        $return_response = $test_controller($post_request, $response, []);
+
+        $this->assertEquals(StatusCodeInterface::STATUS_OK, $return_response->getStatusCode());
+
+        $return_array = json_decode($return_response->getBody()->__toString(), associative: true);
+
+        assertEquals(2, sizeof($return_array));
+
+        foreach ($return_array as $group_info) {
+            assertArrayHasKey('id', $group_info);
+            assertArrayHasKey('group_name', $group_info);
+        }
+    }
+
+    public function testGetGroupsWithId()
+    {
+        $this->mockModel->method('getResource')
+            ->with(['id' => 1])
+            ->willReturn(
+                ['id' => 1, 'group_name' => 'general_discussion'],
+            );
+
+        $test_controller = new GroupController($this->mockModel);
+        $post_request = $this->requestFactory->createRequest('GET', '/');
+        $post_request;
+        $response = $this->responseFactory->createResponse();
+
+        $return_response = $test_controller($post_request, $response, ['id' => 1]);
+
+        $this->assertEquals(StatusCodeInterface::STATUS_OK, $return_response->getStatusCode());
+
+        $return_array = json_decode($return_response->getBody()->__toString(), associative: true);
+
+        assertEquals(2, sizeof($return_array));
+
+        assertArrayHasKey('id', $return_array);
+        assertArrayHasKey('group_name', $return_array);
     }
 }
