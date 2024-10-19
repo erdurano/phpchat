@@ -6,12 +6,24 @@ use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Models\ModelExceptions\ResourceAlreadyExists;
+use App\Models\GroupModel;
+use App\Models\ModelInterface;
 
-
+use function PHPUnit\Framework\isNull;
 
 class GroupController
 {
     use ControllerTrait;
+
+
+    public function __construct(ModelInterface $model = null)
+    {
+        if (is_null($model)) {
+            $this->model = new GroupModel();
+        } else {
+            $this->model = $model;
+        }
+    }
 
     public function POST(Request $request, Response $response, array $args): Response
     {
@@ -47,6 +59,7 @@ class GroupController
 
     public function GET(Request $request, Response $response, array $args): Response
     {
+
         if (!empty($args)) {
             $extra_params = array_diff(['id'], array_keys($args));
             if (!empty($extra_params)) {
@@ -63,10 +76,14 @@ class GroupController
             }
 
             // Check what kind of json i should return for singular resource.
+
             $returned_data = $this->model->getResource($args);
+            $returned_data["members_url"] = sprintf('/groups/%d/members', $returned_data["id"]);
+            $returned_data["messages_url"] = sprintf('/groups/%d/messages', $returned_data["id"]);
         } else {
             $returned_data = $this->model->getResource([]);
         }
+
 
         $response->getBody()->write(json_encode($returned_data));
 

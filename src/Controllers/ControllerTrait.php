@@ -14,7 +14,7 @@ trait ControllerTrait
     // Each Controller class must implement their own methods as HTTP method names i.e. 'PUT','POST' etc.  
     private ModelInterface $model;
 
-    public function __construct(ModelInterface $model)
+    public function __construct(ModelInterface $model = null)
     {
         $this->model = $model;
     }

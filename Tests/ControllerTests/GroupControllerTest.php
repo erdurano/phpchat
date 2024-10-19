@@ -25,7 +25,7 @@ final class GroupControllerTest extends TestCase
     {
         $this->requestFactory = new RequestFactory();
         $this->responseFactory = new ResponseFactory();
-        $this->mockModel = $this->createMock(ModelInterface::class);
+        $this->mockModel = $this->getMockBuilder(ModelInterface::class)->getMock();
     }
 
     public function testPostGoodCase(): void
@@ -69,7 +69,7 @@ final class GroupControllerTest extends TestCase
                     message: "Group 'general discussion' already exists."
                 )
             );
-        $test_controller = new GroupController($this->mockModel);
+        $test_controller = new GroupController(model: $this->mockModel);
         $post_request = $this->requestFactory->createRequest('POST', '/');
         $post_request->getBody()->write(
             json_encode(
@@ -94,6 +94,10 @@ final class GroupControllerTest extends TestCase
         return [
             [["d1" => 'ddsdsjakldka']],
             [[]],
+            [[
+                'id' => 'dsdadadas',
+                'dsada' => 'dsadasd'
+            ]]
         ];
     }
 
@@ -167,9 +171,11 @@ final class GroupControllerTest extends TestCase
 
         $return_array = json_decode($return_response->getBody()->__toString(), associative: true);
 
-        assertEquals(2, sizeof($return_array));
+        assertEquals(4, sizeof($return_array));
 
         assertArrayHasKey('id', $return_array);
         assertArrayHasKey('group_name', $return_array);
+        assertArrayHasKey('members_url', $return_array);
+        assertArrayHasKey('messages_url', $return_array);
     }
 }

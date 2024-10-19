@@ -26,7 +26,7 @@ $app->addErrorMiddleware(true, true, true);
 
 
 $app->post('/groups', [GroupController::class, 'createGroup']);
-$app->get('/groups', [GroupController::class, 'listGroups']);
+$app->get('/groups/{id}', [GroupController::class, 'listGroups']);
 $app->post('/groups/{group_id}/join', [GroupController::class, 'joinGroup']);
 
 // $app->map(['POST', 'GET'], '/try', new MockController(new MockModel()));
