@@ -20,15 +20,23 @@ class GroupModel implements ModelInterface
             $this->connection = $connection;
         }
     }
-    public function getResource(int $id = null): array
+    public function getResource(array $args = []): array
     {
         $query_string = 'SELECT * FROM groups';
         $params = [];
+        $id = null;
 
-        if (!is_null($id)) {
-            $query_string .= ' WHERE id=:group_id';
-            $params['group_id'] = $id;
+        if (!empty($args)) {
+
+            if (array_keys($args) != ['id']) {
+                throw new InvalidArguments(message: "This method only accepts 'id':int as argument");
+            } else {
+                $id = $args['id'];
+                $query_string .= ' WHERE id=:group_id';
+                $params['group_id'] = $id;
+            }
         }
+
         $statement = $this->connection->getConnection()->prepare($query_string);
         $statement->execute($params);
 

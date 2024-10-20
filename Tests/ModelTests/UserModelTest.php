@@ -37,7 +37,7 @@ final class UserModelTest extends TestCase
 
     public function testGetSourceSuccessfull(): void
     {
-        assertEquals($this->testModel->getResource(1), [
+        assertEquals($this->testModel->getResource(['id' => 1]), [
             'id' => 1,
             'username' => 'erdurano'
         ]);
@@ -64,7 +64,7 @@ final class UserModelTest extends TestCase
     {
         $this->expectException(ResourceNotFound::class);
         $this->expectExceptionMessage('User with id=5 not found.');
-        $this->testModel->getResource(id: 5);
+        $this->testModel->getResource(['id' => 5]);
     }
 
     public function testCreateResourceSuccessfull(): void

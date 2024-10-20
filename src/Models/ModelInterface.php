@@ -8,6 +8,6 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 interface ModelInterface
 {
-    public function getResource(int $id): array;
+    public function getResource(array $args): array;
     public function createResource(array $args): array;
 }
