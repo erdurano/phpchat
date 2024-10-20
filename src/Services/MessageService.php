@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\MessageModel;
 use App\Repositories\MessageRepository;
 
 class MessageService
@@ -10,7 +11,7 @@ class MessageService
 
     public function __construct()
     {
-        $this->messageRepository = new MessageRepository();
+        $this->messageRepository = new MessageModel();
     }
 
     public function sendMessage(int $groupId, string $userId, string $message)
@@ -18,7 +19,7 @@ class MessageService
         return $this->messageRepository->sendMessage($groupId, $userId, $message);
     }
 
-    public function listMessages(int $groupId)
+    public function listMessages(int $groupId, ?string $since): array
     {
         return $this->messageRepository->listMessages($groupId);
     }

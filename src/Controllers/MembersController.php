@@ -10,7 +10,6 @@ use App\Services\ServiceExceptions\AlreadyMember;
 use App\Services\ServiceInterface;
 use App\Services\MemberService;
 
-use function PHPUnit\Framework\isEmpty;
 
 class MembersController
 {
