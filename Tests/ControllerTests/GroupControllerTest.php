@@ -20,7 +20,6 @@ final class GroupControllerTest extends TestCase
     private RequestFactory $requestFactory;
     private ResponseFactory $responseFactory;
     private $mockService;
-    private $testController;
 
     protected function setUp(): void
     {

@@ -9,27 +9,29 @@ use App\Models\ModelInterface;
 use App\Controllers\MembersController;
 use PHPUnit\Framework\MockObject\MockObject;
 use App\Models\ModelExceptions\ResourceAlreadyExists;
+use App\Services\MemberService;
+use App\Services\ServiceExceptions\AlreadyMember;
 use Fig\Http\Message\StatusCodeInterface;
 
 use function PHPUnit\Framework\assertArrayHasKey;
 use function PHPUnit\Framework\assertEquals;
 
-final class MembersControllerTest extends TestCase
+final class MemberControllerTest extends TestCase
 {
     private RequestFactory $requestFactory;
     private ResponseFactory $responseFactory;
-    private MockObject $mockModel;
+    private $mockService;
 
     protected function setUp(): void
     {
         $this->requestFactory = new RequestFactory();
         $this->responseFactory = new ResponseFactory();
-        $this->mockModel = $this->createMock(ModelInterface::class);
+        $this->mockService = $this->createMock(MemberService::class);
     }
 
     public function testPostGoodCase(): void
     {
-        $this->mockModel->method('createResource')->with(['user_name' => 'erdurano', 'group_id' => 1])->willReturn(
+        $this->mockService->method('subscribeUserToGroup')->with('erdurano', 1)->willReturn(
             [
                 'group_id' => 1,
                 'group_name' => 'general discussion',
@@ -39,7 +41,7 @@ final class MembersControllerTest extends TestCase
                 ]
             ]
         );
-        $test_controller = new MembersController($this->mockModel);
+        $test_controller = new MembersController($this->mockService);
         $post_request = $this->requestFactory->createRequest('POST', '/groups/1/members');
         $post_request->getBody()->write(
             json_encode(
@@ -71,18 +73,18 @@ final class MembersControllerTest extends TestCase
 
     public function testPostMemberAlreadyExists(): void
     {
-        $this->mockModel
-            ->method('createResource')
-            ->with([
-                'user_name' => 'setnay',
-                'group_id' => 1
-            ])
+        $this->mockService
+            ->method('subscribeUserToGroup')
+            ->with(
+                'setnay',
+                1
+            )
             ->willThrowException(
-                new ResourceAlreadyExists(
+                new AlreadyMember(
                     message: "'setnay' is already member of 'general discussion'."
                 )
             );
-        $test_controller = new MembersController($this->mockModel);
+        $test_controller = new MembersController($this->mockService);
         $post_request = $this->requestFactory->createRequest('POST', '/groups/1/members');
         $post_request->getBody()->write(
             json_encode(
@@ -115,7 +117,7 @@ final class MembersControllerTest extends TestCase
      */
     public function testPostMalformedBody($malformedData)
     {
-        $test_controller = new MembersController($this->mockModel);
+        $test_controller = new MembersController($this->mockService);
         $post_request = $this->requestFactory->createRequest('POST', '/groups/1/members');
         $post_request->getBody()->write(
             json_encode($malformedData)
@@ -137,7 +139,7 @@ final class MembersControllerTest extends TestCase
 
     public function testGetMembers()
     {
-        $this->mockModel->method('getResource')->willReturn([
+        $this->mockService->method('getMembersByGroupId')->with(1)->willReturn([
 
             'id' => 1,
             'group_name' => 'general_discussion',
@@ -154,7 +156,7 @@ final class MembersControllerTest extends TestCase
 
         ]);
 
-        $test_controller = new MembersController($this->mockModel);
+        $test_controller = new MembersController($this->mockService);
         $post_request = $this->requestFactory->createRequest('GET', '/groups/1/members');
         $post_request;
         $response = $this->responseFactory->createResponse();

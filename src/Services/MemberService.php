@@ -27,4 +27,19 @@ class MemberService
     {
         return $this->groupRepository->joinGroup($groupId, $userId);
     }
+
+    public function getOrCreateUser(string $username): array
+    {
+        return [];
+    }
+
+    public function subscribeUserToGroup(string $username, int $gropId): array
+    {
+        return [];
+    }
+
+    public function getMembersByGroupId(int $groupId): array
+    {
+        return [];
+    }
 }
