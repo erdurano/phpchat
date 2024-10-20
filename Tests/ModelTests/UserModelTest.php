@@ -82,7 +82,7 @@ final class UserModelTest extends TestCase
     public function testCreateResourceFails(): void
     {
         $this->expectException(ResourceAlreadyExists::class);
-        $this->expectExceptionMessage('A user with username "erdurano" already exists');
+        $this->expectExceptionMessage('A user with name "erdurano" already exists');
         $this->testModel->createResource(['username' => 'erdurano']);
     }
 }
