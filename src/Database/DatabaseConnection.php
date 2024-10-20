@@ -8,11 +8,21 @@ class DatabaseConnection
 {
     private static $instance = null;
     private $connection;
+    private ?string $databasePath = null;
 
-    private function __construct()
+    public function __construct(string $databasePath = null)
     {
-        $this->connection = new PDO('sqlite:' . __DIR__ . '/../../chat.db');
+        if (is_null($databasePath)) {
+            $this->connection = new PDO('sqlite:' . __DIR__ . '/../../chat.db');
+        } else {
+            $this->connection = new PDO('sqlite:' . $databasePath);
+        }
         $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    }
+
+    public function getConnection()
+    {
+        return $this->connection;
     }
 
     public static function getInstance()
