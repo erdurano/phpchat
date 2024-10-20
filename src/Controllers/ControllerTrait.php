@@ -5,19 +5,12 @@ namespace App\Controllers;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
-use App\Models\ModelInterface;
 
 trait ControllerTrait
 {
     // Provides general methods for interfacing with model
-
     // Each Controller class must implement their own methods as HTTP method names i.e. 'PUT','POST' etc.  
-    private ModelInterface $model;
 
-    public function __construct(ModelInterface $model = null)
-    {
-        $this->model = $model;
-    }
 
     protected function defaultErrorResponse(Request $request, Response $response, array $args): Response
     {

@@ -39,6 +39,10 @@ class ComposerStaticInit026509606a55be5c56c243e48adc6597
             'Doctrine\\Instantiator\\' => 22,
             'DeepCopy\\' => 9,
         ),
+        'C' => 
+        array (
+            'Config\\' => 7,
+        ),
         'A' => 
         array (
             'App\\' => 4,
@@ -96,6 +100,10 @@ class ComposerStaticInit026509606a55be5c56c243e48adc6597
         array (
             0 => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy',
         ),
+        'Config\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/config',
+        ),
         'App\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
@@ -105,15 +113,21 @@ class ComposerStaticInit026509606a55be5c56c243e48adc6597
     public static $classMap = array (
         'App\\Controllers\\ControllerTrait' => __DIR__ . '/../..' . '/src/Controllers/ControllerTrait.php',
         'App\\Controllers\\GroupController' => __DIR__ . '/../..' . '/src/Controllers/GroupController.php',
+        'App\\Controllers\\MembersController' => __DIR__ . '/../..' . '/src/Controllers/MembersController.php',
         'App\\Controllers\\MessageController' => __DIR__ . '/../..' . '/src/Controllers/MessageController.php',
         'App\\Database\\DatabaseConnection' => __DIR__ . '/../..' . '/src/Database/DatabaseConnection.php',
         'App\\Middlewares\\ContentTypeMiddleware' => __DIR__ . '/../..' . '/src/Middlewares/ContentTypeMiddleware.php',
-        'App\\Models\\MockModel' => __DIR__ . '/../..' . '/src/Models/MockModel.php',
+        'App\\Models\\GroupModel' => __DIR__ . '/../..' . '/src/Models/GroupModel.php',
+        'App\\Models\\MessageModel' => __DIR__ . '/../..' . '/src/Models/MessageModel.php',
+        'App\\Models\\ModelExceptions\\InvalidArguments' => __DIR__ . '/../..' . '/src/Models/ModelExceptions/InvalidArguments.php',
+        'App\\Models\\ModelExceptions\\ResourceAlreadyExists' => __DIR__ . '/../..' . '/src/Models/ModelExceptions/ResourceAlreadyExists.php',
+        'App\\Models\\ModelExceptions\\ResourceNotFound' => __DIR__ . '/../..' . '/src/Models/ModelExceptions/ResourceNotFound.php',
         'App\\Models\\ModelInterface' => __DIR__ . '/../..' . '/src/Models/ModelInterface.php',
         'App\\Models\\UserModel' => __DIR__ . '/../..' . '/src/Models/UserModel.php',
         'App\\Repositories\\GroupRepository' => __DIR__ . '/../..' . '/src/Repositories/GroupRepository.php',
         'App\\Repositories\\MessageRepository' => __DIR__ . '/../..' . '/src/Repositories/MessageRepository.php',
         'App\\Services\\GroupService' => __DIR__ . '/../..' . '/src/Services/GroupService.php',
+        'App\\Services\\MemberService' => __DIR__ . '/../..' . '/src/Services/MemberService.php',
         'App\\Services\\MessageService' => __DIR__ . '/../..' . '/src/Services/MessageService.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',

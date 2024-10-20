@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Repositories\GroupRepository;
+use App\Models\GroupModel;
 
 class GroupService
 {
@@ -10,21 +10,21 @@ class GroupService
 
     public function __construct()
     {
-        $this->groupRepository = new GroupRepository();
+        $this->groupRepository = new GroupModel();
     }
 
-    public function createGroup(string $groupName)
+    public function createGroup(string $groupName): array
     {
         return $this->groupRepository->createGroup($groupName);
     }
 
-    public function listGroups()
+    public function getGroups(): array
     {
         return $this->groupRepository->listGroups();
     }
 
-    public function joinGroup(int $groupId, string $userId)
+    public function getGroupById(int $id): array
     {
-        return $this->groupRepository->joinGroup($groupId, $userId);
+        return [];
     }
 }

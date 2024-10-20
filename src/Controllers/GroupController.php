@@ -8,6 +8,8 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Models\ModelExceptions\ResourceAlreadyExists;
 use App\Models\GroupModel;
 use App\Models\ModelInterface;
+use App\Services\GroupService;
+use App\Services\ServiceExceptions\GroupAlreadyExists;
 
 use function PHPUnit\Framework\isNull;
 
@@ -15,13 +17,15 @@ class GroupController
 {
     use ControllerTrait;
 
+    private GroupService $service;
 
-    public function __construct(ModelInterface $model = null)
+
+    public function __construct(GroupService $service = null)
     {
-        if (is_null($model)) {
-            $this->model = new GroupModel();
+        if (is_null($service)) {
+            $this->service = new GroupService();
         } else {
-            $this->model = $model;
+            $this->service = $service;
         }
     }
 
@@ -43,12 +47,12 @@ class GroupController
                 return $response;
             }
 
-            $returned_data = $this->model->createResource($requestData);
+            $returned_data = $this->service->createGroup($requestData['group_name']);
             if (!empty($returned_data)) {
                 $response = $response->withStatus(StatusCodeInterface::STATUS_CREATED);
                 $response->getBody()->write(json_encode($returned_data));
             };
-        } catch (ResourceAlreadyExists $e) {
+        } catch (GroupAlreadyExists $e) {
 
             $error_message = ['error' => $e->getMessage()];
             $response = $response->withStatus(StatusCodeInterface::STATUS_CONFLICT);
@@ -77,11 +81,11 @@ class GroupController
 
             // Check what kind of json i should return for singular resource.
 
-            $returned_data = $this->model->getResource($args);
+            $returned_data = $this->service->getGroupById($args['id']);
             $returned_data["members_url"] = sprintf('/groups/%d/members', $returned_data["id"]);
             $returned_data["messages_url"] = sprintf('/groups/%d/messages', $returned_data["id"]);
         } else {
-            $returned_data = $this->model->getResource([]);
+            $returned_data = $this->service->getGroups();
         }
 
 
