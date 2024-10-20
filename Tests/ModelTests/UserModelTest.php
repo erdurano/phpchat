@@ -85,4 +85,11 @@ final class UserModelTest extends TestCase
         $this->expectExceptionMessage('A user with name "erdurano" already exists');
         $this->testModel->createResource(['username' => 'erdurano']);
     }
+
+    public function testGetResourceWithUsername(): void
+    {
+        $array = $this->testModel->getResource(['username' => 'erdurano']);
+        $this->assertEquals('erdurano', $array["username"]);
+        $this->assertEquals(1, $array["id"]);
+    }
 }

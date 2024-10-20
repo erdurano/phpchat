@@ -29,12 +29,15 @@ class UserModel implements ModelInterface
 
         if (!empty($args)) {
 
-            if (array_keys($args) != ['id']) {
+            if (array_keys($args) != ['id'] && array_keys($args) != ['username']) {
                 throw new InvalidArguments(message: "This method only accepts 'id':int as argument");
-            } else {
+            } elseif (array_keys($args) == ['id']) {
                 $id = $args['id'];
                 $query_string .= ' WHERE id=:user_id';
                 $params['user_id'] = $id;
+            } else {
+                $query_string .= ' WHERE username=:user_id';
+                $params['user_id'] = $args['username'];
             }
         }
 
