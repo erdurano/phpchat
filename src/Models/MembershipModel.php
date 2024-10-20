@@ -22,23 +22,35 @@ class MembershipModel implements ModelInterface
     }
     public function getResource(array $args = []): array
     {
-        $query_string = 'SELECT * FROM groups_users WHERE group_id=:group_id AND user_id=:user_id';
-
+        $query_string = 'SELECT * FROM groups_users';
+        $params = [];
+        $clause_tokens = [];
         if (!empty($args)) {
-
-            if (array_keys($args) != ['group_id', 'user_id']) {
+            $query_string .= ' WHERE ';
+            if (array_key_exists('group_id', $args)) {
+                array_push($clause_tokens, 'group_id=:group_id');
+                $params['group_id'] = $args["group_id"];
+                unset($args["group_id"]);
+            }
+            if (array_key_exists('user_id', $args)) {
+                array_push($clause_tokens, 'user_id=:user_id');
+                $params['user_id'] = $args["user_id"];
+                unset($args["user_id"]);
+            }
+            $query_string .= implode(' AND ', $clause_tokens);
+            if (!empty($args)) {
                 throw new InvalidArguments(message: "This method accepts 'group_id':int and 'user_id':int as argument array members");
             }
         }
 
         $statement = $this->connection->getConnection()->prepare($query_string);
-        $statement->execute($args);
+        $statement->execute($params);
 
         $query_result = $statement->fetchAll(PDO::FETCH_ASSOC);
         if (sizeof($query_result) == 0) {
             throw new ResourceNotFound(message: 'User is not a member');
-        } elseif (sizeof($query_result) == 1) {
-            $return_array = $query_result[0];
+        } else {
+            $return_array = $query_result;
 
             return $return_array;
         }

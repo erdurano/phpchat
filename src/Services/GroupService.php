@@ -6,10 +6,10 @@ use App\Models\GroupModel;
 
 class GroupService
 {
-    private static self $instance = null;
+    private static ?self $instance = null;
     private $groupModel;
 
-    public function getInstance(): self
+    public static function getInstance(): self
     {
         if (is_null(self::$instance)) {
             self::$instance = new GroupService();

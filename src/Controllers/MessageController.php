@@ -51,6 +51,7 @@ class MessageController
         } else {
             $since = null;
         }
+
         $messages = $this->service->listMessages($groupId, $since);
 
         $response->getBody()->write(json_encode($messages));

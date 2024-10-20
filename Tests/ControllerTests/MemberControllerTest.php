@@ -7,8 +7,6 @@ use Slim\Psr7\Factory\RequestFactory;
 use Slim\Psr7\Factory\ResponseFactory;
 use App\Models\ModelInterface;
 use App\Controllers\MembersController;
-use PHPUnit\Framework\MockObject\MockObject;
-use App\Models\ModelExceptions\ResourceAlreadyExists;
 use App\Services\MemberService;
 use App\Services\ServiceExceptions\AlreadyMember;
 use Fig\Http\Message\StatusCodeInterface;

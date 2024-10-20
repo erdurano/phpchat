@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Models\ModelExceptions\ResourceNotFound;
 use App\Services\GroupService;
 use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -62,13 +63,18 @@ class MembersController
     public function GET(Request $request, Response $response, array $args): Response
     {
 
+        try {
 
-        $returned_data = $this->service->getMembersByGroupId($args['id']);
-        $returned_data["messages_url"] = sprintf('/groups/%d/messages', $returned_data["id"]);
+            $returned_data = $this->service->getMembersByGroupId($args['group_id']);
+            $returned_data["messages_url"] = sprintf('/groups/%d/messages', $returned_data["id"]);
 
 
-        $response->getBody()->write(json_encode($returned_data));
+            $response->getBody()->write(json_encode($returned_data));
 
-        return $response;
+            return $response;
+        } catch (ResourceNotFound $e) {
+            $response->getBody()->write(json_encode(["error" => "This group is empty"]));
+            return $response->withStatus(StatusCodeInterface::STATUS_NOT_FOUND);
+        }
     }
 }
