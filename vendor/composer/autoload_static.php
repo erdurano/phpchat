@@ -7,11 +7,11 @@ namespace Composer\Autoload;
 class ComposerStaticInit026509606a55be5c56c243e48adc6597
 {
     public static $files = array (
-        '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
-        '253c157292f75eb38082b5acb06f3f01' => __DIR__ . '/..' . '/nikic/fast-route/src/functions.php',
+        'ec07570ca5a812141189b1fa81503674' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
         '7b11c4dc42b3b3023073cb14e519683c' => __DIR__ . '/..' . '/ralouphie/getallheaders/src/getallheaders.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
-        'ec07570ca5a812141189b1fa81503674' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
+        '253c157292f75eb38082b5acb06f3f01' => __DIR__ . '/..' . '/nikic/fast-route/src/functions.php',
+        '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -38,10 +38,6 @@ class ComposerStaticInit026509606a55be5c56c243e48adc6597
         array (
             'Doctrine\\Instantiator\\' => 22,
             'DeepCopy\\' => 9,
-        ),
-        'C' => 
-        array (
-            'Config\\' => 7,
         ),
         'A' => 
         array (
@@ -100,10 +96,6 @@ class ComposerStaticInit026509606a55be5c56c243e48adc6597
         array (
             0 => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy',
         ),
-        'Config\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/config',
-        ),
         'App\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
@@ -118,17 +110,18 @@ class ComposerStaticInit026509606a55be5c56c243e48adc6597
         'App\\Database\\DatabaseConnection' => __DIR__ . '/../..' . '/src/Database/DatabaseConnection.php',
         'App\\Middlewares\\ContentTypeMiddleware' => __DIR__ . '/../..' . '/src/Middlewares/ContentTypeMiddleware.php',
         'App\\Models\\GroupModel' => __DIR__ . '/../..' . '/src/Models/GroupModel.php',
+        'App\\Models\\MembershipModel' => __DIR__ . '/../..' . '/src/Models/MembershipModel.php',
         'App\\Models\\MessageModel' => __DIR__ . '/../..' . '/src/Models/MessageModel.php',
         'App\\Models\\ModelExceptions\\InvalidArguments' => __DIR__ . '/../..' . '/src/Models/ModelExceptions/InvalidArguments.php',
         'App\\Models\\ModelExceptions\\ResourceAlreadyExists' => __DIR__ . '/../..' . '/src/Models/ModelExceptions/ResourceAlreadyExists.php',
         'App\\Models\\ModelExceptions\\ResourceNotFound' => __DIR__ . '/../..' . '/src/Models/ModelExceptions/ResourceNotFound.php',
         'App\\Models\\ModelInterface' => __DIR__ . '/../..' . '/src/Models/ModelInterface.php',
         'App\\Models\\UserModel' => __DIR__ . '/../..' . '/src/Models/UserModel.php',
-        'App\\Repositories\\GroupRepository' => __DIR__ . '/../..' . '/src/Repositories/GroupRepository.php',
-        'App\\Repositories\\MessageRepository' => __DIR__ . '/../..' . '/src/Repositories/MessageRepository.php',
         'App\\Services\\GroupService' => __DIR__ . '/../..' . '/src/Services/GroupService.php',
         'App\\Services\\MemberService' => __DIR__ . '/../..' . '/src/Services/MemberService.php',
         'App\\Services\\MessageService' => __DIR__ . '/../..' . '/src/Services/MessageService.php',
+        'App\\Services\\ServiceExceptions\\AlreadyMember' => __DIR__ . '/../..' . '/src/Services/ServiceExceptions/AlreadyMember.php',
+        'App\\Services\\ServiceExceptions\\GroupAlreadyExists' => __DIR__ . '/../..' . '/src/Services/ServiceExceptions/GroupAlreadyExists.php',
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
         'PHPUnit\\Exception' => __DIR__ . '/..' . '/phpunit/phpunit/src/Exception.php',

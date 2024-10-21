@@ -28,13 +28,16 @@ class MessageService
     }
 
 
-    public function sendMessage(int $groupId, string $userId, string $message)
+    public function sendMessage(int $groupId, string $userName, string $message)
     {
-        return $this->messageModel->createResource([
+        $user = $this->memberService->getOrCreateUser($userName);
+        $return_array = $this->messageModel->createResource([
             'group_id' => $groupId,
-            'user_id' => $userId,
-            'content' => $userId
+            'user_id' => $user['id'],
+            'content' => $message
         ]);
+
+        return $return_array; // TODO: fit json format to return array
     }
 
     public function listMessages(int $groupId, ?string $since): array
@@ -52,8 +55,15 @@ class MessageService
             'messages' => []
         ];
         foreach ($messages as $message) {
-            // sender = $this->memberService->getOrCreateUser('erdurano'); // TODO:
-            array_push($message_array['messages'], $message);
+            $sender = $this->memberService->getUserById($message['user_id']); // TODO:
+            array_push($message_array['messages'], [
+                'sender' => [
+                    'id' => $sender['id'],
+                    'user_name' => $sender['username']
+                ],
+                'content' => $message['content'],
+                'created_at' => $message['created_at']
+            ]);
         }
         return $message_array;
     }

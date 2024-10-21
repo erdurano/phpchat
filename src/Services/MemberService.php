@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\MembershipModel;
 use App\Models\ModelExceptions\ResourceAlreadyExists;
+use App\Models\ModelExceptions\ResourceNotFound;
 use App\Models\UserModel;
 use App\Services\ServiceExceptions\AlreadyMember;
 
@@ -43,6 +44,13 @@ class MemberService
         } catch (ResourceAlreadyExists $e) {
             $user = $this->userModel->getResource(['username' => $username]);
         }
+        return $user;
+    }
+
+    public function getUserById(int $id)
+    {
+
+        $user = $this->userModel->getResource(['id' => $id]);
         return $user;
     }
 

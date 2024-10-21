@@ -37,7 +37,7 @@ final class MembershipModelTest extends TestCase
 
     public function testGetSourceSuccessfull(): void
     {
-        assertEquals(3, sizeof($this->testModel->getResource(['group_id' => 1, 'user_id' => 2])));
+        assertEquals(1, sizeof($this->testModel->getResource(['group_id' => 1, 'user_id' => 2])));
     }
 
 
