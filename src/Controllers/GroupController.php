@@ -39,8 +39,8 @@ class GroupController
                 $response->getBody()->write(
                     json_encode(
                         [
-                            'error' => 'Malformed request. Request should have form of:\n' .
-                                '[\n\t"group_name": string\n]'
+                            'error' => 'Malformed request.',
+                            'request_schema' => ["group_name" => "string"]
                         ]
                     )
                 );

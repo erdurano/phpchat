@@ -68,8 +68,10 @@ class MessageController
                 ));
                 return $response->withStatus(StatusCodeInterface::STATUS_BAD_REQUEST);
             }
+            $messages = $this->service->listMessages($groupId, $since);
+        } else {
+            $messages = $this->service->listMessages($groupId, null);
         };
-        $messages = $this->service->listMessages($groupId, $since);
 
         $response->getBody()->write(json_encode($messages));
         return $response->withHeader('Content-Type', 'application/json');

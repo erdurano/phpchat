@@ -10,7 +10,7 @@ use App\Models\ModelExceptions\ResourceNotFound;
 
 use function PHPUnit\Framework\assertEquals;
 
-define('BASE_DB_PATH', __DIR__ . '/../../chat_try.sqlite3');
+define('BASE_DB_PATH', __DIR__ . '/base_db.sqlite3');
 define('TEST_DB_PATH', __DIR__ . '/test_db.sqlite3');
 
 final class GroupModelTest extends TestCase

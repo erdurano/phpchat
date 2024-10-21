@@ -36,10 +36,12 @@ class MembersController
 
             $err_response = $response->withStatus(StatusCodeInterface::STATUS_BAD_REQUEST);
 
-            $err_response->getBody()->write(json_encode([
-                'error' => 'Malformed request. Request should have form of:\n' .
-                    '[\n\t"user_name": string\n]'
-            ]));
+            $err_response->getBody()->write(json_encode(
+                [
+                    'error' => 'Malformed request.',
+                    'request_schema' => ["user_name" => "string"]
+                ]
+            ));
             return $err_response;
         }
 
