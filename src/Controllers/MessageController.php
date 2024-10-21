@@ -7,6 +7,8 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Services\MessageService;
 use Fig\Http\Message\StatusCodeInterface;
 
+use function PHPUnit\Framework\isNull;
+
 class MessageController
 {
     use ControllerTrait;
@@ -25,12 +27,19 @@ class MessageController
     public function POST(Request $request, Response $response, array $args): Response
     {
         $data = json_decode($request->getBody(), associative: true);
+        if (isNull($data)) {
+            $data = [];
+        }
         $groupId = $args['group_id'];
         if (!array_key_exists('user_name', $data) | !array_key_exists('message', $data)) {
             $response->getBody()->write(json_encode(
                 [
-                    'error' => 'Malformed request. Request should have form of:\n' .
-                        '[\n\t"user_name": string,\n\t"message: string\n]'
+                    'error' => 'Malformed request. Request',
+                    'request_schema' =>
+                    [
+                        "user_name" => 'string type',
+                        'message' => 'string type'
+                    ]
 
                 ]
             ));

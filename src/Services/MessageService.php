@@ -31,11 +31,24 @@ class MessageService
     public function sendMessage(int $groupId, string $userName, string $message)
     {
         $user = $this->memberService->getOrCreateUser($userName);
-        $return_array = $this->messageModel->createResource([
+        $group = $this->groupService->getGroupById($groupId);
+        $message_array = $this->messageModel->createResource([
             'group_id' => $groupId,
             'user_id' => $user['id'],
             'content' => $message
         ]);
+        $return_array = [
+            'group_id' => $group['id'],
+            'group_name' => $group['group_name'],
+            'message' => [
+                'sender' => [
+                    'id' => $user['id'],
+                    'user_name' => $user['username']
+                ],
+                'content' => $message_array['content'],
+                'created_at' => $message_array['created_at']
+            ]
+        ];
 
         return $return_array; // TODO: fit json format to return array
     }

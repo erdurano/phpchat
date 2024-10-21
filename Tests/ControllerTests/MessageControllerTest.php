@@ -112,8 +112,12 @@ final class MessageControllerTest extends TestCase
         $this->assertEquals(StatusCodeInterface::STATUS_BAD_REQUEST, $return_response->getStatusCode());
         $this->assertEquals(
             [
-                'error' => 'Malformed request. Request should have form of:\n' .
-                    '[\n\t"user_name": string,\n\t"message: string\n]'
+                'error' => 'Malformed request. Request',
+                'request_schema' =>
+                [
+                    "user_name" => 'string type',
+                    'message' => 'string type'
+                ]
 
             ],
             json_decode($return_response->getBody()->__toString(), associative: true)
