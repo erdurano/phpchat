@@ -5,6 +5,7 @@ namespace App\Controllers;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Services\MessageService;
+use DateTimeImmutable;
 use Fig\Http\Message\StatusCodeInterface;
 
 use function PHPUnit\Framework\isNull;
@@ -34,7 +35,7 @@ class MessageController
         if (!array_key_exists('user_name', $data) | !array_key_exists('message', $data)) {
             $response->getBody()->write(json_encode(
                 [
-                    'error' => 'Malformed request. Request',
+                    'error' => 'Malformed request.',
                     'request_schema' =>
                     [
                         "user_name" => 'string type',
@@ -55,12 +56,19 @@ class MessageController
     public function GET(Request $request, Response $response, array $args): Response
     {
         $groupId = $args['group_id'];
-        if (array_key_exists('since', $args)) {
-            $since = $args['since'];
-        } else {
-            $since = null;
-        }
 
+        $query_params = $request->getQueryParams();
+        if (array_key_exists('since', $query_params)) {
+            $since = DateTimeImmutable::createFromFormat('Y-m-d-H-i-s', $query_params['since']);
+            if (!$since) {
+                $response->getBody()->write(json_encode(
+                    [
+                        'error' => "'since' query parameter should adhere to 'YYYY-MM-DD-hh-mm-ss' format."
+                    ]
+                ));
+                return $response->withStatus(StatusCodeInterface::STATUS_BAD_REQUEST);
+            }
+        };
         $messages = $this->service->listMessages($groupId, $since);
 
         $response->getBody()->write(json_encode($messages));

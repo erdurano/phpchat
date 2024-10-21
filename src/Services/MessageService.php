@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\MessageModel;
-use App\Repositories\MessageRepository;
+use DateTimeImmutable;
 
 class MessageService
 {
@@ -53,7 +53,7 @@ class MessageService
         return $return_array;
     }
 
-    public function listMessages(int $groupId, ?string $since): array
+    public function listMessages(int $groupId, ?DateTimeImmutable $since): array
     {
         $group = $this->groupService->getGroupById($groupId);
 
