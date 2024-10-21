@@ -44,7 +44,7 @@ class MembersController
         }
 
         $user_name = $request_data['user_name'];
-        $group_id = $args['id'];
+        $group_id = $args['group_id'];
 
         try {
             $user_array = $this->service->subscribeUserToGroup($user_name, $group_id);
@@ -65,7 +65,7 @@ class MembersController
 
         try {
 
-            $returned_data = $this->service->getMembersByGroupId($args['id']);
+            $returned_data = $this->service->getMembersByGroupId($args['group_id']);
             $returned_data["messages_url"] = sprintf('/groups/%d/messages', $returned_data["id"]);
 
 

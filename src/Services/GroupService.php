@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\GroupModel;
+use App\Models\ModelExceptions\ResourceAlreadyExists;
+use App\Services\ServiceExceptions\GroupAlreadyExists;
 
 class GroupService
 {
@@ -24,7 +26,11 @@ class GroupService
 
     public function createGroup(string $groupName): array
     {
-        return $this->groupModel->createResource(['group_name' => $groupName]);
+        try {
+            return $this->groupModel->createResource(['group_name' => $groupName]);
+        } catch (ResourceAlreadyExists $th) {
+            throw new GroupAlreadyExists(message: sprintf("A group named '%s' already exists", $groupName));
+        }
     }
 
     public function getGroups(): array

@@ -51,7 +51,7 @@ final class MemberControllerTest extends TestCase
         $response = $this->responseFactory->createResponse();
 
 
-        $return_response = $test_controller($post_request, $response, ['id' => 1]);
+        $return_response = $test_controller($post_request, $response, ['group_id' => 1]);
 
         $return_array = json_decode($return_response->getBody()->__toString(), associative: true);
         $this->assertArrayHasKey('group_id', $return_array);
@@ -94,7 +94,7 @@ final class MemberControllerTest extends TestCase
         $response = $this->responseFactory->createResponse();
 
 
-        $return_response = $test_controller($post_request, $response, ['id' => 1]);
+        $return_response = $test_controller($post_request, $response, ['group_id' => 1]);
 
         $return_array = json_decode($return_response->getBody()->__toString(), associative: true);
         $this->assertArrayHasKey('error', $return_array);
@@ -159,7 +159,7 @@ final class MemberControllerTest extends TestCase
         $post_request;
         $response = $this->responseFactory->createResponse();
 
-        $return_response = $test_controller($post_request, $response, ['id' => 1]);
+        $return_response = $test_controller($post_request, $response, ['group_id' => 1]);
 
         $this->assertEquals(StatusCodeInterface::STATUS_OK, $return_response->getStatusCode());
 

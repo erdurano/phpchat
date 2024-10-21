@@ -50,7 +50,7 @@ class MessageService
             ]
         ];
 
-        return $return_array; // TODO: fit json format to return array
+        return $return_array;
     }
 
     public function listMessages(int $groupId, ?string $since): array

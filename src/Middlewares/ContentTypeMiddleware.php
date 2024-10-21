@@ -15,8 +15,8 @@ class ContentTypeMiddleware
     header value and passes only requests with "application/json".
     If header is anything other, returns a 415: Unsopported Media Type
     */
-    private string $errorContentTemplate = 'Endpoints only accepts \'application/json\' as content type.' .
-        ' Your request supplied: %s';
+    private string $errorContentTemplate = "Endpoints only accepts 'application/json' as content type." .
+        " Your request supplied: %s";
 
     protected ResponseFactory $response_factory;
     protected string $required_type = 'application/json';

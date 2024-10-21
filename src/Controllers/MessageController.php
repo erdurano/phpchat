@@ -27,7 +27,7 @@ class MessageController
     public function POST(Request $request, Response $response, array $args): Response
     {
         $data = json_decode($request->getBody(), associative: true);
-        if (isNull($data)) {
+        if (is_null($data)) {
             $data = [];
         }
         $groupId = $args['group_id'];

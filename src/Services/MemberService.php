@@ -54,13 +54,13 @@ class MemberService
         return $user;
     }
 
-    public function subscribeUserToGroup(string $username, int $gropId): array
+    public function subscribeUserToGroup(string $username, int $groupId): array
     {
         $user = $this->getOrCreateUser($username);
-        $group = $this->groupService->getGroupById($gropId);
+        $group = $this->groupService->getGroupById($groupId);
         try {
-            $returned = $this->membershipModel->createResource(['group_id' => $gropId, 'user_id' => $user['id']]);
-            if (!isEmpty($returned)) {
+            $returned = $this->membershipModel->createResource(['group_id' => $groupId, 'user_id' => $user['id']]);
+            if (!empty($returned)) {
                 return [
                     'group_id' => $group['id'],
                     'group_name' => $group['group_name'],
