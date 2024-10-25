@@ -10,6 +10,7 @@ use App\Models\GroupModel;
 use App\Models\ModelInterface;
 use App\Services\GroupService;
 use App\Services\ServiceExceptions\GroupAlreadyExists;
+use App\Services\ServiceExceptions\GroupNotFound;
 
 use function PHPUnit\Framework\isNull;
 
@@ -79,13 +80,19 @@ class GroupController
                     );
             }
 
-            // Check what kind of json i should return for singular resource.
 
             $returned_data = $this->service->getGroupById($args['id']);
             $returned_data["members_url"] = sprintf('/groups/%d/members', $returned_data["id"]);
             $returned_data["messages_url"] = sprintf('/groups/%d/messages', $returned_data["id"]);
         } else {
-            $returned_data = $this->service->getGroups();
+            try {
+                $returned_data = $this->service->getGroups();
+            } catch (GroupNotFound $e) {
+                $response->getBody()->write(json_encode([
+                    'error' => $e->getMessage()
+                ]));
+                return $response->withStatus(StatusCodeInterface::STATUS_NOT_FOUND);
+            }
         }
 
 

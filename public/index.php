@@ -8,7 +8,7 @@ use App\Middlewares\ContentTypeMiddleware;
 use App\Controllers\MockController;
 use App\Models\MockModel;
 
-require_once '../config.php';
+// require_once '../config.php';
 require  '../vendor/autoload.php';
 
 $app = AppFactory::create();

@@ -4,7 +4,9 @@ namespace App\Services;
 
 use App\Models\GroupModel;
 use App\Models\ModelExceptions\ResourceAlreadyExists;
+use App\Models\ModelExceptions\ResourceNotFound;
 use App\Services\ServiceExceptions\GroupAlreadyExists;
+use App\Services\ServiceExceptions\GroupNotFound;
 
 class GroupService
 {
@@ -35,7 +37,11 @@ class GroupService
 
     public function getGroups(): array
     {
-        return $this->groupModel->getResource();
+        try {
+            return $this->groupModel->getResource();
+        } catch (ResourceNotFound $e) {
+            throw new GroupNotFound(message: "There are no groups in this application yet");
+        }
     }
 
     public function getGroupById(int $id): array
