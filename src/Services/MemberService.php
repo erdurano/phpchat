@@ -94,7 +94,7 @@ class MemberService
                 $return_array['members'],
                 [
                     'id' => $user['id'],
-                    'user_name' => $user['user_name']
+                    'user_name' => $user['username']
                 ]
             );
         }
