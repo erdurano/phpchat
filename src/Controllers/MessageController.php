@@ -5,6 +5,8 @@ namespace App\Controllers;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use App\Services\MessageService;
+use App\Services\ServiceExceptions\UserIsNotMember;
+use App\Services\ServiceExceptions\UserNotExists;
 use DateTimeImmutable;
 use Fig\Http\Message\StatusCodeInterface;
 
@@ -46,7 +48,16 @@ class MessageController
             ));
             return $response->withStatus(StatusCodeInterface::STATUS_BAD_REQUEST);
         }
-        $result = $this->service->sendMessage($groupId, $data['user_name'], $data['message']);
+
+        try {
+            $result = $this->service->sendMessage($groupId, $data['user_name'], $data['message']);
+        } catch (UserIsNotMember $th) {
+            $response->getBody()->write(json_encode(['error' => sprintf("User '%s' is not a member of the group.", $data["user_name"])]));
+            return $response->withStatus(StatusCodeInterface::STATUS_NOT_ACCEPTABLE);
+        } catch (UserNotExists $th) {
+            $response->getBody()->write(json_encode(['error' => sprintf("User '%s' does not exists.", $data["user_name"])]));
+            return $response->withStatus(StatusCodeInterface::STATUS_NOT_FOUND);
+        }
 
         $return_response = $response->withStatus(StatusCodeInterface::STATUS_CREATED);
         $return_response->getBody()->write(json_encode($result));

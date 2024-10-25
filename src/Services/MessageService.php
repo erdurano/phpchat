@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\MessageModel;
+use App\Services\ServiceExceptions\UserIsNotMember;
 use DateTimeImmutable;
 
 class MessageService
@@ -30,7 +31,10 @@ class MessageService
 
     public function sendMessage(int $groupId, string $userName, string $message)
     {
-        $user = $this->memberService->getOrCreateUser($userName);
+        if (!$this->memberService->IsUserMemberOfGroup($groupId, $userName)) {
+            throw new UserIsNotMember(message: sprintf("'%s' is not member of '%s' group.", $userName, $this->groupService->getGroupById($groupId)["group_name"]));
+        }
+        $user = $this->memberService->getUserByName($userName);
         $group = $this->groupService->getGroupById($groupId);
         $message_array = $this->messageModel->createResource([
             'group_id' => $groupId,

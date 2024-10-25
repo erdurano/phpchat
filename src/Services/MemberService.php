@@ -7,6 +7,7 @@ use App\Models\ModelExceptions\ResourceAlreadyExists;
 use App\Models\ModelExceptions\ResourceNotFound;
 use App\Models\UserModel;
 use App\Services\ServiceExceptions\AlreadyMember;
+use App\Services\ServiceExceptions\UserNotExists;
 
 use function PHPUnit\Framework\isEmpty;
 
@@ -17,7 +18,6 @@ class MemberService
     private $userModel;
     private $membershipModel;
     private $groupService;
-    // private $memberService;
 
     public static function getInstance(): self
     {
@@ -32,7 +32,6 @@ class MemberService
         $this->userModel = new UserModel();
         $this->membershipModel = new MembershipModel();
         $this->groupService = GroupService::getInstance();
-        // $this->memberService = MemberService::getInstance();
     }
 
 
@@ -51,6 +50,12 @@ class MemberService
     {
 
         $user = $this->userModel->getResource(['id' => $id]);
+        return $user;
+    }
+
+    public function getUserByName(string $user_name)
+    {
+        $user = $this->userModel->getResource(['username' => $user_name]);
         return $user;
     }
 
@@ -99,5 +104,23 @@ class MemberService
             );
         }
         return $return_array;
+    }
+
+    public function IsUserMemberOfGroup($groupId, $userName)
+    {
+        try {
+            $user = $this->getUserByName($userName);
+        } catch (ResourceNotFound $e) {
+            throw new UserNotExists(message: sprintf("User '%s' not found", $userName));
+        }
+
+        try {
+            $return_array = $this->membershipModel->getResource(["group_id" => $groupId, "user_id" => $user["id"]]);
+            if (!empty($return_array)) {
+                return true;
+            }
+        } catch (ResourceNotFound $th) {
+            return false;
+        }
     }
 }
